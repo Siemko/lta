@@ -1,0 +1,5 @@
+.env
+envs/
+.env.*
+!.env.template
+node_modules
