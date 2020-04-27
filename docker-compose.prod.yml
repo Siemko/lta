@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  backend:
+    env_file:
+      - ./envs/db.env
+    environment: 
+      - NODE_ENV=production
+    command: sh -c "npm run build && npm run start:prod"
+    labels:
+      - "virtual.host=api.lta.private.guzy.dev"
+      - "virtual.port=4000"
+
+  webapp:
+    command: sh -c "npm i -g serve && npm run build && serve -l 3000 -s build"
+    environment: 
+      - NODE_ENV=production
+    labels:
+      - "virtual.host=lta.private.guzy.dev"
+      - "virtual.port=3000"
+
+  server:
+    image: siemko8/caddy2-gen
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+      - webapp

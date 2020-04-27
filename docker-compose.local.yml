@@ -12,8 +12,9 @@ services:
       - NODE_ENV=development
     volumes: 
       - "./backend/src:/usr/backend/src"
-    labels:
-      - "virtual.host=backend.lta.localhost"
+    # labels:
+    #   - "virtual.host=backend.lta.localhost"
+    #   - "virtual.port=4000"
 
   webapp:
     ports:
@@ -22,20 +23,22 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - CHOKIDAR_POLLINTERVAL=3000
       - NODE_ENV=development
+      - REACT_APP_BACKEND_HOST=http://localhost:4000
     volumes: 
       - "./webapp/src:/usr/webapp/src"
       - "./webapp/public:/usr/webapp/public"
-    labels:
-      - "virtual.host=webapp.lta.localhost"
+    # labels:
+    #   - "virtual.host=webapp.lta.localhost"
+    #   - "virtual.port=3000"
 
-  server:
-    image: siemko8/caddy2-gen
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - backend
-      - webapp
+  # server:
+  #   image: siemko8/caddy2-gen
+  #   restart: always
+  #   volumes:
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   depends_on:
+  #     - backend
+  #     - webapp
