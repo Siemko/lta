@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  master:
+    image: locustio/locust
+    ports:
+      - "8089:8089"
+      - "5557:5557"
+      - "5558:5558"
+    environment:
+      - LOCUST_MODE=master
+      - LOCUSTFILE_PATH=/locust-scripts/locustfile.py
+      - TARGET_URL=https://api.lta.private.guzy.dev
+      - LOCUST_OPTS=--step-load
+    volumes:
+      - ./locust-scripts:/locust-scripts
+
+  slave1:
+    image: locustio/locust
+    environment:
+      - LOCUST_MODE=slave
+      - LOCUST_MASTER_HOST=master
+      - LOCUSTFILE_PATH=/locust-scripts/locustfile.py
+      - TARGET_URL=https://api.lta.private.guzy.dev
+      - LOCUST_OPTS=--step-load
+    volumes:
+      - ./locust-scripts:/locust-scripts
+
+  slave2:
+    image: locustio/locust
+    environment:
+      - LOCUST_MODE=slave
+      - LOCUST_MASTER_HOST=master
+      - LOCUSTFILE_PATH=/locust-scripts/locustfile.py
+      - TARGET_URL=https://api.lta.private.guzy.dev
+      - LOCUST_OPTS=--step-load
+    volumes:
+      - ./locust-scripts:/locust-scripts
+
+  slave3:
+    image: locustio/locust
+    environment:
+      - LOCUST_MODE=slave
+      - LOCUST_MASTER_HOST=master
+      - LOCUSTFILE_PATH=/locust-scripts/locustfile.py
+      - TARGET_URL=https://lta.private.guzy.dev
+      - LOCUST_OPTS=--step-load
+    volumes:
+      - ./locust-scripts:/locust-scripts
